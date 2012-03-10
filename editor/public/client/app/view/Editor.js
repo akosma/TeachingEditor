@@ -50,7 +50,6 @@ Ext.define('TeachingEditor.view.Editor', {
                 // This are the contents of the file loaded
                 editor.getSession().setValue("loading '" + component.filename + "'");
                 editor.getSession().setUseSoftTabs(true);
-                editor.getSession().setUseWrapMode(true);
 
                 component.updatePreferences();
 
