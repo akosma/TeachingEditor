@@ -1,0 +1,21 @@
+div.task {
+    font-weight: bold;
+}
+
+div.completed_false {
+
+    color: red;
+}
+
+div.completed_true {
+    color: green;
+}
+
+p.instructions {
+    margin-top: 100px; 
+    margin-left: 10px; 
+    margin-right: 10px; 
+    color: gray;
+}
+
+
