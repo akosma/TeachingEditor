@@ -7,6 +7,7 @@ Ext.define('TeachingEditor.view.Viewport', {
     items: [{
         xtype: 'tabpanel',
         id: 'editorTabPanel',
+        border: false,
         region: 'center'
     },
     {
@@ -14,6 +15,7 @@ Ext.define('TeachingEditor.view.Viewport', {
         height: 30,
         enableOverflow: true,
         region: 'north',
+        border: false,
         items: [
             {
             xtype: 'button',
@@ -204,6 +206,7 @@ Ext.define('TeachingEditor.view.Viewport', {
         xtype: 'treepanel',
         width: 250,
         id: 'projectStructurePanel',
+        border: false,
         collapsible: true,
         title: 'Project Structure',
         region: 'west',
@@ -217,24 +220,28 @@ Ext.define('TeachingEditor.view.Viewport', {
         xtype: 'toolbar',
         height: 25,
         region: 'south',
+        border: false,
         id: 'statusBar',
         html: ''
     },
     {
         xtype: 'panel',
-        width: 350,
+        width: 360,
         collapsible: true,
         title: 'Preview',
         layout: 'absolute',
         region: 'east',
-        bodyStyle: 'background: lightgray;',
+        border: false,
+        bodyStyle: 'background: #D0DCED;',
         items: [
             {
             xtype: 'panel',
-            x: 10,
-            y: 10,
+            border: false,
+            x: 20,
+            y: 15,
             height: 480,
             width: 320,
+            id: 'previewPanel',
             html: '<iframe id="mainProjectFrame" src="/app" style="width: 100%; height: 100%; border: 0"></iframe>'
         }
         ]
