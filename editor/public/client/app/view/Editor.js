@@ -9,7 +9,7 @@ Ext.define('TeachingEditor.view.Editor', {
         var column = cursor.column;
         var row = cursor.row;
         var statusTexts = [
-            '<span class="statusBar">',
+            '<span class="statusBar" style="margin-left: 50px; width: 70px">',
             'Row: ',
             row + 1,
             '</span>',
