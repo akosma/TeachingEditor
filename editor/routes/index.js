@@ -272,3 +272,49 @@ exports.islocalrequest = function (req, res) {
     res.end(body);
 };
 
+exports.zipproject = function(req, res) {
+    // This code is adapted from
+    // http://stackoverflow.com/questions/5754153/zip-archives-in-node-js
+
+    var spawn = require('child_process').spawn;
+    // Options -r recursive -j ignore directory info - redirect to stdout
+    var projectName = req.query['projectName'];
+    if (!projectName) {
+        res.end();
+        return;
+    }
+    var projectsPath = __dirname + '/../public/projects/';
+    var selectedProjectPath = projectsPath + projectName;
+    var options = { 
+        cwd: selectedProjectPath,
+        env: process.env
+    };
+    var zip = spawn('zip', ['-r', '-', '.'], options);
+
+    res.writeHead(200, {
+        "Content-Type": "application/octet-stream",
+        "Content-disposition": "attachment; filename=" + projectName + ".zip"
+    });
+
+    // Keep writing stdout to res
+    zip.stdout.on('data', function (data) {
+        res.write(data);
+    });
+
+    zip.stderr.on('data', function (data) {
+        // Uncomment to see the files being added
+        //console.log('zip stderr: ' + data);
+    });
+
+    // End the response on zip exit
+    zip.on('exit', function (code) {
+        if (code !== 0) {
+            res.statusCode = 500;
+            console.log('zip process exited with code ' + code);
+            res.end();
+        } else {
+            res.end();
+        }
+    });
+};
+

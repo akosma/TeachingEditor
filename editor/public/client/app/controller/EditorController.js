@@ -24,6 +24,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
                 click: this.closeProject
             },
 
+            'menuitem[action=downloadProject]': {
+                click: this.downloadProject
+            },
+
             'button[action=cancelOpenProject]': {
                 click: this.cancelOpenProject
             },
@@ -178,6 +182,9 @@ Ext.define('TeachingEditor.controller.EditorController', {
         // Load index.html in the <iframe>
         var mainProjectFrame = document.getElementById('mainProjectFrame');
         mainProjectFrame.src = "/projects/default";
+
+        // This is used by the 'downloadProject' action
+        this.currentProject = null;
     },
 
     cancelOpenProject: function(button, e, eOpts) {
@@ -217,6 +224,9 @@ Ext.define('TeachingEditor.controller.EditorController', {
         // Load index.html in the <iframe>
         var mainProjectFrame = document.getElementById('mainProjectFrame');
         mainProjectFrame.src = "/projects/" + projectName;
+
+        // This is used by the 'downloadProject' action
+        this.currentProject = projectName;
     },
 
     projectListSingleClick: function (view, record, element, index, event, eOpts) {
@@ -320,6 +330,13 @@ Ext.define('TeachingEditor.controller.EditorController', {
             filename: component.filename, 
             path: component.path
         });        
+    },
+
+    downloadProject: function(item, e, eOpts) {
+        if (this.currentProject) {
+            var downloadFrame = document.getElementById('downloadFrame');
+            downloadFrame.src = '/app/zip?projectName=' + this.currentProject;
+        }
     }
 });
 

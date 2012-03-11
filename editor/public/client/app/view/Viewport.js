@@ -31,6 +31,11 @@ Ext.define('TeachingEditor.view.Viewport', {
                 },
                 {
                     xtype: 'menuitem',
+                    text: 'Download Project',
+                    action: 'downloadProject'
+                },
+                {
+                    xtype: 'menuitem',
                     text: 'Close Project',
                     action: 'closeProject'
                 }
@@ -244,7 +249,9 @@ Ext.define('TeachingEditor.view.Viewport', {
             height: 480,
             width: 320,
             id: 'previewPanel',
-            html: '<iframe id="mainProjectFrame" src="/projects/default" style="width: 100%; height: 100%; border: 0"></iframe>'
+            html: [
+                '<iframe id="mainProjectFrame" src="/projects/default" style="width: 100%; height: 100%; border: 0"></iframe>',
+                '<iframe id="downloadFrame" style="width: 0px; height: 0px; border: 0"></iframe>'].join("")
         }
         ]
     }

@@ -32,6 +32,7 @@ app.get('/app/file', routes.file); // request a particular file
 app.post('/app/file', routes.updatefile); // update the contents of a particular file
 app.get('/app/ip', routes.ipaddress); // return the current IP address for sharing
 app.get('/app/local', routes.islocalrequest); // true if the app is accessed from localhost
+app.get('/app/zip', routes.zipproject); // zips a project for download
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
