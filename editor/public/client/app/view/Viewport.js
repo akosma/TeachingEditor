@@ -242,7 +242,7 @@ Ext.define('TeachingEditor.view.Viewport', {
             height: 480,
             width: 320,
             id: 'previewPanel',
-            html: '<iframe id="mainProjectFrame" src="/app" style="width: 100%; height: 100%; border: 0"></iframe>'
+            html: '<iframe id="mainProjectFrame" src="/projects/default" style="width: 100%; height: 100%; border: 0"></iframe>'
         }
         ]
     }

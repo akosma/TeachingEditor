@@ -24,12 +24,13 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/app', routes.app); // used by the <iframe> in the client app
+app.get('/', routes.start); // redirects the user to the app
 app.get('/app/projects', routes.projects); // list of available projects
 app.get('/app/project', routes.project); // list of files of a particular project
 app.get('/app/file', routes.file); // request a particular file
 app.post('/app/file', routes.updatefile); // update the contents of a particular file
 app.get('/app/ip', routes.ipaddress); // return the current IP address for sharing
+app.get('/app/local', routes.islocalrequest); // true if the app is accessed from localhost
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
