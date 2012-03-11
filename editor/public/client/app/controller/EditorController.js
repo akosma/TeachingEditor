@@ -40,6 +40,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
                 click: this.showShareOptions
             },
 
+            'button[action=showAboutBox]': {
+                click: this.showAboutBox
+            },
+
             '#projectlist': {
                 itemclick: this.projectListSingleClick,
                 itemdblclick: this.projectListDoubleClick
@@ -80,9 +84,18 @@ Ext.define('TeachingEditor.controller.EditorController', {
                         self.setPreference('readonly', !local);
 
                         if (!local) {
+
                             // set menus as disabled
-                            var mainToolbar = Ext.getCmp('mainToolbar');
-                            mainToolbar.setDisabled(true);
+                            var menuItems = [
+                                'openProjectMenu',
+                                'closeProjectMenu',
+                                'shareOptionsButton'
+                            ];
+                            for (var index = 0, length = menuItems.length; index < length; ++index) {
+                                var itemName = menuItems[index];
+                                var item = Ext.getCmp(itemName);
+                                item.setDisabled(true);
+                            }
 
                             // Register to receive notifications
                             self.socket.on('open project', function(data) {
@@ -322,6 +335,17 @@ Ext.define('TeachingEditor.controller.EditorController', {
         ];
 
         Ext.MessageBox.alert("Follow this sample live!", message.join(""));
+    },
+
+    showAboutBox: function(button, e, eOpts) {
+        var message = [
+            'Teaching Editor 1.0',
+            'by Adrian Kosmaczewski',
+            '',
+            'Copyright © 2012 akosma software',
+            'All Rights Reserved'
+        ];
+        Ext.MessageBox.alert('About this app', message.join("<br>"));
     },
 
     editorUpdated: function(component) {

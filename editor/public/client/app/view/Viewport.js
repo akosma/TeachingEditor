@@ -27,17 +27,20 @@ Ext.define('TeachingEditor.view.Viewport', {
                     {
                     xtype: 'menuitem',
                     text: 'Open...',
-                    action: 'showOpenProjectDialog'
+                    action: 'showOpenProjectDialog',
+                    id: 'openProjectMenu'
                 },
                 {
                     xtype: 'menuitem',
                     text: 'Download Project',
-                    action: 'downloadProject'
+                    action: 'downloadProject',
+                    id: 'downloadProjectMenu'
                 },
                 {
                     xtype: 'menuitem',
                     text: 'Close Project',
-                    action: 'closeProject'
+                    action: 'closeProject',
+                    id: 'closeProjectMenu'
                 }
                 ]
             }
@@ -197,15 +200,13 @@ Ext.define('TeachingEditor.view.Viewport', {
         {
             xtype: 'button',
             text: 'Share',
-            action: 'showShareOptions'
+            action: 'showShareOptions',
+            id: 'shareOptionsButton'
         },
         {
             xtype: 'button',
-            text: 'Preview'
-        },
-        {
-            xtype: 'button',
-            text: 'About'
+            text: 'About',
+            action: 'showAboutBox'
         }
         ]
     },
