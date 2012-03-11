@@ -190,7 +190,8 @@ Ext.define('TeachingEditor.view.Viewport', {
         },
         {
             xtype: 'button',
-            text: 'Share'
+            text: 'Share',
+            action: 'showShareOptions'
         },
         {
             xtype: 'button',

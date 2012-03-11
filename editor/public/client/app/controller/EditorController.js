@@ -32,6 +32,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
                 click: this.openSelectedProject
             },
 
+            'button[action=showShareOptions]': {
+                click: this.showShareOptions
+            },
+
             '#projectlist': {
                 itemclick: this.projectListSingleClick,
                 itemdblclick: this.projectListDoubleClick
@@ -107,7 +111,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
     closeProject: function(item, e, eOpts) {
         var statusBar = Ext.getCmp('statusBar');
         statusBar.update("");
-        
+
         var editorTabPanel = Ext.getCmp('editorTabPanel');
         editorTabPanel.removeAll();
         this.openFiles = {};
@@ -220,6 +224,29 @@ Ext.define('TeachingEditor.controller.EditorController', {
         if (this.currentEditor) {
             this.currentEditor.editor.resize();
         }
+    },
+
+    showShareOptions: function(button, e, eOpts) {
+        Ext.Ajax.request({
+            url: '/app/ip',
+            method: 'GET',
+            success: function(response){
+                var text = response.responseText;
+                var array = JSON.parse(text);
+                var ip = array[0];
+
+                var message = [
+                    '<pre align="center" style="font-size: 28pt; color: black;">',
+                    'http://',
+                    ip,
+                    ':3000/',
+                    '</pre>'
+                ];
+
+                Ext.MessageBox.alert("See this sample!", message.join(""));
+            }
+        });
+
     }
 });
 
