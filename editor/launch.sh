@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-(node app.js & open /Applications/Teaching\ Editor.app) | parallel
+(node app.js & open http://localhost:3000/client) | parallel
 
