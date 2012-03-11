@@ -20,7 +20,9 @@ Use [Homebrew][6] to install the required libraries and utilities:
 - node
 - parallel
 
-Also, install [npm][9] and install [Express][4] with it.
+Also, install [npm][9] and install [Express][4] and [Socket.IO][11] with
+it. You can just type `npm install` at the `editor` folder to have all
+the libraries installed automatically.
 
 Then, download and install the required JavaScript libraries in
 subfolders of the `editor/public/libs` folder:
@@ -51,4 +53,5 @@ to do the same, which opens an app "TeachingEditor" created with
 [8]:http://www.sencha.com/products/touch
 [9]:http://npmjs.org/
 [10]:http://fluidapp.com/
+[11]:http://socket.io/
 

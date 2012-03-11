@@ -2,24 +2,25 @@ var express = require('express');
 var routes = require('./routes');
 
 var app = module.exports = express.createServer();
+var io = require('socket.io').listen(app);
 
 // Configuration
 
 app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express['static'](__dirname + '/public'));
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(app.router);
+    app.use(express['static'](__dirname + '/public'));
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler()); 
+    app.use(express.errorHandler()); 
 });
 
 // Routes
@@ -34,4 +35,19 @@ app.get('/app/local', routes.islocalrequest); // true if the app is accessed fro
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+io.sockets.on('connection', function (socket) {
+    socket.on('open project', function(data) {
+        socket.broadcast.emit('open project', data);
+    });
+    socket.on('open file', function(data) {
+        socket.broadcast.emit('open file', data);
+    });
+    socket.on('file selected', function(data) {
+        socket.broadcast.emit('file selected', data);
+    });
+    socket.on('file updated', function(data) {
+        socket.broadcast.emit('file updated', data);
+    });
+});
 

@@ -26,11 +26,8 @@ exports.start = function(req, res) {
                 // second later. Boom.
                 setCurrentProject('default', function(err) {});
             }, 500);
-            res.redirect('/client');
         }
-        else {
-            res.redirect('/share');
-        }
+        res.redirect('/client');
     }
 };
 

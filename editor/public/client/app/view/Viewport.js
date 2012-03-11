@@ -12,6 +12,7 @@ Ext.define('TeachingEditor.view.Viewport', {
     },
     {
         xtype: 'toolbar',
+        id: 'mainToolbar',
         height: 30,
         enableOverflow: true,
         region: 'north',

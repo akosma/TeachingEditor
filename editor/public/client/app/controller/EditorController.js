@@ -49,7 +49,62 @@ Ext.define('TeachingEditor.controller.EditorController', {
             'editorpanel': {
                 activate: this.editorActivate,
                 beforeclose: this.editorBeforeClose,
-                resize: this.editorResize
+                resize: this.editorResize,
+                editorupdated: this.editorUpdated
+            }
+        });
+    },
+
+    onLaunch: function(app) {
+        var self = this;
+        Ext.Ajax.request({
+            url: '/app/ip',
+            method: 'GET',
+            success: function(response){
+                var text = response.responseText;
+                var array = JSON.parse(text);
+                self.ipaddress = array[0];
+                self.socket = io.connect('http://' + self.ipaddress);
+
+                Ext.Ajax.request({
+                    url: '/app/local',
+                    method: 'GET',
+                    success: function(response) {
+                        var text = response.responseText;
+                        var obj = JSON.parse(text);
+                        var local = obj.local;
+                        self.setPreference('readonly', !local);
+
+                        if (!local) {
+                            // set menus as disabled
+                            var mainToolbar = Ext.getCmp('mainToolbar');
+                            mainToolbar.setDisabled(true);
+
+                            // Register to receive notifications
+                            self.socket.on('open project', function(data) {
+                                var projectName = data.projectName;
+                                self.openProject(projectName);
+                            });
+                            self.socket.on('open file', function(data) {
+                                var filename = data.filename;
+                                var path = data.path;
+                                self.openFilename(filename, path);
+                            });
+                            self.socket.on('file selected', function(data) {
+                                var path = data.path;
+                                var tab = self.openFiles[path];
+                                var editorTabPanel = Ext.getCmp('editorTabPanel');
+                                editorTabPanel.setActiveTab(tab);
+                            });
+                            self.socket.on('file updated', function(data) {
+                                console.log(data);
+                                var path = data.path;
+                                var tab = self.openFiles[path];
+                                tab.loadFileContents();
+                            });
+                        }
+                    }
+                });
             }
         });
     },
@@ -59,7 +114,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
         if (!storedPreferences) {
             storedPreferences = {
                 'fontSize': '16',
-                'theme': 'TextMate'
+                'theme': 'Solarized Light'
             };
             localStorage[this.PREFERENCES_KEY] = JSON.stringify(storedPreferences);
         }
@@ -122,7 +177,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
         // Load index.html in the <iframe>
         var mainProjectFrame = document.getElementById('mainProjectFrame');
-        mainProjectFrame.src = "/app";
+        mainProjectFrame.src = "/projects/default";
     },
 
     cancelOpenProject: function(button, e, eOpts) {
@@ -134,6 +189,15 @@ Ext.define('TeachingEditor.controller.EditorController', {
         var selectedRecord = this.openProjectDialog.selectedRecord;
         var projectName = selectedRecord.get('name');
 
+        this.socket.emit('open project', { projectName: projectName });
+
+        this.openProject(projectName);
+
+        this.openProjectDialog.close();
+        this.openProjectDialog = null;
+    },
+
+    openProject: function(projectName) {
         this.closeProject();
 
         var projectStore = Ext.data.StoreManager.lookup('ProjectTreeStore');
@@ -149,9 +213,6 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
         var treePanel = Ext.getCmp('projectStructurePanel');
         treePanel.setTitle(projectName);
-
-        this.openProjectDialog.close();
-        this.openProjectDialog = null;
 
         // Load index.html in the <iframe>
         var mainProjectFrame = document.getElementById('mainProjectFrame');
@@ -182,24 +243,33 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
     openFile: function (view, record, element, index, event, eOpts) {
         if (record.get('leaf')) {
-
-            var editorTabPanel = Ext.getCmp('editorTabPanel');
-            var filename = record.get('filename');
+            var filename = record.get('text');
             var path = record.get('description');
-            var tab = this.openFiles[path];
+            this.openFilename(filename, path);
 
-            if (!tab) {
-                tab = Ext.create('TeachingEditor.view.Editor', { 
-                    filename: record.get('text'),
-                    path: record.get('description'),
-                    preferences: this.loadPreferences()
-                });
-                editorTabPanel.add(tab);
-                this.openFiles[path] = tab;
-            }
-
-            editorTabPanel.setActiveTab(tab);
+            // Notify all connected clients
+            this.socket.emit('open file', { 
+                filename: filename, 
+                path: path
+            });
         }
+    },
+
+    openFilename: function(filename, path) {
+        var editorTabPanel = Ext.getCmp('editorTabPanel');
+        var tab = this.openFiles[path];
+
+        if (!tab) {
+            tab = Ext.create('TeachingEditor.view.Editor', { 
+                filename: filename,
+                path: path,
+                preferences: this.loadPreferences()
+            });
+            editorTabPanel.add(tab);
+            this.openFiles[path] = tab;
+        }
+
+        editorTabPanel.setActiveTab(tab);
     },
 
     treePanelReady: function(view, eOpts) {
@@ -211,6 +281,12 @@ Ext.define('TeachingEditor.controller.EditorController', {
         component.editor.resize();
         component.editor.focus();
         component.updateStatusBar();
+
+        // Notify all connected clients
+        this.socket.emit('file selected', { 
+            filename: component.filename, 
+            path: component.path
+        });
     },
 
     editorBeforeClose: function(component, opts) {
@@ -227,26 +303,23 @@ Ext.define('TeachingEditor.controller.EditorController', {
     },
 
     showShareOptions: function(button, e, eOpts) {
-        Ext.Ajax.request({
-            url: '/app/ip',
-            method: 'GET',
-            success: function(response){
-                var text = response.responseText;
-                var array = JSON.parse(text);
-                var ip = array[0];
+        var message = [
+            '<pre align="center" style="font-size: 28pt; color: black;">',
+            'http://',
+            this.ipaddress,
+            ':3000/',
+            '</pre>'
+        ];
 
-                var message = [
-                    '<pre align="center" style="font-size: 28pt; color: black;">',
-                    'http://',
-                    ip,
-                    ':3000/',
-                    '</pre>'
-                ];
+        Ext.MessageBox.alert("Follow this sample live!", message.join(""));
+    },
 
-                Ext.MessageBox.alert("See this sample!", message.join(""));
-            }
-        });
-
+    editorUpdated: function(component) {
+        // Notify all connected clients
+        this.socket.emit('file updated', { 
+            filename: component.filename, 
+            path: component.path
+        });        
     }
 });
 
