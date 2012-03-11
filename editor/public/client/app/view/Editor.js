@@ -1,5 +1,5 @@
 Ext.define('TeachingEditor.view.Editor', {
-    extend: 'Ext.tab.Tab',
+    extend: 'Ext.panel.Panel',
     alias: 'widget.editorpanel',
     closable: false,
     updateStatusBar: function() {
