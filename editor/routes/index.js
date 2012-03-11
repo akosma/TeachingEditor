@@ -50,9 +50,11 @@ exports.projects = function (req, res) {
                 fs.stat(path, function(err, stat) {
                     pending -= 1;
                     if (stat && stat.isDirectory()) {
-                        results.push({
-                            name: file
-                        });
+                        if (file !== 'default' && file !== 'current') {
+                            results.push({
+                                name: file
+                            });
+                        }
                         if (!pending) {
                             done(null, results);
                             return;
