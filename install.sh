@@ -8,6 +8,7 @@ npm install
 
 echo ===========================
 echo Copy the Socket.io client to the required folder
+mkdir public/libs
 mkdir public/libs/ace
 mkdir public/libs/extjs
 mkdir public/libs/jqm
