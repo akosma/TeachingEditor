@@ -27,15 +27,20 @@ external dependencies in your system.
 
 ### Client
 
-The client has been tested successfully on the Mac with the following
-browsers:
+The client has been tested successfully on several combinations of
+operating systems and browsers:
 
-- Firefox 10
-- Chrome 17 
-- Safari 5.1
-- Opera 11
-- Mobile Safari for iOS 5.1 on the iPad (in this case, however,
-  scrolling is not possible)
+- Cross-platform browsers:
+    - Firefox 10
+    - Chrome 17 
+    - Opera 11
+- OS X "Lion"
+    - Safari 5.1
+- Windows 7
+    - Internet Explorer 9
+- iOS
+    - Mobile Safari for iOS 5.1 on the iPad (in this case, however,
+      scrolling is not possible)
 
 Pay attention to the fact that the mobile libraries themselves might not
 be compatible with some of these browsers (in particular, Sencha Touch
