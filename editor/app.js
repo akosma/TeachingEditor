@@ -50,5 +50,11 @@ io.sockets.on('connection', function (socket) {
     socket.on('file updated', function(data) {
         socket.broadcast.emit('file updated', data);
     });
+    socket.on('new student', function(data) {
+        socket.broadcast.emit('new student', data);
+    });
+    socket.on('initialize student', function(data) {
+        socket.broadcast.emit('initialize student', data);
+    });
 });
 

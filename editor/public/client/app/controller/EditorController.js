@@ -83,7 +83,32 @@ Ext.define('TeachingEditor.controller.EditorController', {
                         var local = obj.local;
                         self.setPreference('readonly', !local);
 
-                        if (!local) {
+                        if (local) {
+                            // This happens in the teacher console
+                            self.teacher = true;
+
+                            // When a new student connects, tell 
+                            self.socket.on('new student', function(data) {
+                                if (self.currentProject) {
+                                    var editorTabPanel = Ext.getCmp('editorTabPanel');
+                                    var items = [];
+                                    editorTabPanel.items.each(function (item) {
+                                        items.push({
+                                            path: item.path,
+                                            filename: item.filename
+                                        });
+                                    });
+
+                                    self.socket.emit('initialize student', { 
+                                        projectName: self.currentProject,
+                                        files: items
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            // This happens in the students console
+                            self.teacher = false;
 
                             // set menus as disabled
                             var menuItems = [
@@ -119,6 +144,26 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 var tab = self.openFiles[path];
                                 tab.loadFileContents();
                             });
+                            self.socket.on('initialize student', function(data) {
+                                if (!self.initialized) {
+                                    self.initialized = true;
+
+                                    // Open the project
+                                    var projectName = data.projectName;
+                                    self.openProject(projectName);
+
+                                    // Restore any open files
+                                    var files = data.files;
+                                    for (var index = 0, length = files.length; index < length; ++index) {
+                                        var obj = files[index];
+                                        self.openFilename(obj.filename, obj.path);
+                                    }
+                                }
+                            });
+
+                            // Announce that a new instance is here :)
+                            self.initialized = false;
+                            self.socket.emit('new student', {});     
                         }
                     }
                 });
@@ -270,11 +315,13 @@ Ext.define('TeachingEditor.controller.EditorController', {
             var path = record.get('description');
             this.openFilename(filename, path);
 
-            // Notify all connected clients
-            this.socket.emit('open file', { 
-                filename: filename, 
-                path: path
-            });
+            if (this.teacher) {
+                // Notify all connected students
+                this.socket.emit('open file', { 
+                    filename: filename, 
+                    path: path
+                });
+            }
         }
     },
 
@@ -305,11 +352,13 @@ Ext.define('TeachingEditor.controller.EditorController', {
         component.editor.focus();
         component.updateStatusBar();
 
-        // Notify all connected clients
-        this.socket.emit('file selected', { 
-            filename: component.filename, 
-            path: component.path
-        });
+        if (this.teacher) {
+            // Notify all connected students
+            this.socket.emit('file selected', { 
+                filename: component.filename, 
+                path: component.path
+            });
+        }
     },
 
     editorBeforeClose: function(component, opts) {
