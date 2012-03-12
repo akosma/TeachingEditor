@@ -145,6 +145,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 var position = tab.editor.getSession().getSelection().getCursor();
                                 tab.loadFileContents(function () {
                                     tab.editor.gotoLine(position.row + 1);
+
+                                    // Load index.html in the <iframe>
+                                    var mainProjectFrame = document.getElementById('mainProjectFrame');
+                                    mainProjectFrame.src = mainProjectFrame.src;
                                 });
                             });
                             self.socket.on('initialize student', function(data) {
