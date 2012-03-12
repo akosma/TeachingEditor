@@ -37,7 +37,7 @@ mv jquery.mobile-1.0.1/ jqm
 rm jqm.zip
 
 echo Downloading jQuery 1.7.1
-curl --location http://code.jquery.com/jquery-1.7.1.min.js > jquery-1.7.1.min.js
+curl --location http://code.jquery.com/jquery-1.7.1.min.js > jqm/jquery-1.7.1.min.js
 
 echo Downloading Ext.js 4
 curl --location http://cdn.sencha.io/ext-4.0.7-gpl.zip > ext.zip
