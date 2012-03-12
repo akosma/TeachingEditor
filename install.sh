@@ -9,18 +9,39 @@ npm install
 echo ===========================
 echo Copy the Socket.io client to the required folder
 mkdir public/libs
-mkdir public/libs/ace
-mkdir public/libs/extjs
-mkdir public/libs/jqm
-mkdir public/libs/sencha
 mkdir public/libs/socket.io
 cp node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js public/libs/socket.io/
 
 echo ===========================
-echo You should download now the following libraries, to be installed in their
-echo required directories, specified after the arrow:
-echo - Ace http://ace.ajax.org/ -> ace
-echo - Ext.js http://www.sencha.com/products/extjs/ -> extjs
-echo - jQuery Mobile http://jquerymobile.com/ -> jqm
-echo - Sencha Touch 2.0 http://www.sencha.com/products/touch -> sencha
+echo Downloading required JavaScript libraries
+cd public/libs
+
+echo Downloading Ace
+curl --location https://github.com/downloads/ajaxorg/ace/ace-0.2.0.zip > ace.zip
+unzip ace.zip
+rm -r __MACOSX/
+mv ace-0.2.0/src ./ace
+rm -r ace-0.2.0/
+rm ace.zip
+
+echo Downloading Sencha Touch 2.0
+curl --location http://cdn.sencha.io/touch/sencha-touch-2.0.0-gpl.zip > sencha.zip
+unzip sencha.zip
+mv sencha-touch-2.0.0-gpl/ sencha
+rm sencha.zip
+
+echo Downloading jQuery Mobile 1.0.1
+curl --location http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.zip > jqm.zip
+unzip jqm.zip
+mv jquery.mobile-1.0.1/ jqm
+rm jqm.zip
+
+echo Downloading Ext.js 4
+curl --location http://cdn.sencha.io/ext-4.0.7-gpl.zip > ext.zip
+unzip ext.zip
+mv ext-4.0.7-gpl/ ext
+rm ext.zip
+
+echo ===========================
+echo You can now start the server by typing './launch.sh'
 
