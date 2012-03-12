@@ -37,6 +37,8 @@ The client has been tested successfully with the following browsers:
 - Chrome 17 
 - Safari 5.1
 - Opera 11
+- Mobile Safari for iOS 5.1 on the iPad (in this case, however,
+  scrolling is not possible)
 
 Pay attention to the fact that the mobile libraries themselves might not
 be compatible with some of these browsers (in particular, Sencha Touch
