@@ -142,7 +142,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 console.log(data);
                                 var path = data.path;
                                 var tab = self.openFiles[path];
-                                tab.loadFileContents();
+                                var position = tab.editor.getSession().getSelection().getCursor();
+                                tab.loadFileContents(function () {
+                                    tab.editor.gotoLine(position.row + 1);
+                                });
                             });
                             self.socket.on('initialize student', function(data) {
                                 if (!self.initialized) {
@@ -398,11 +401,13 @@ Ext.define('TeachingEditor.controller.EditorController', {
     },
 
     editorUpdated: function(component) {
-        // Notify all connected clients
-        this.socket.emit('file updated', { 
-            filename: component.filename, 
-            path: component.path
-        });        
+        if (this.teacher) {
+            // Notify all connected clients
+            this.socket.emit('file updated', { 
+                filename: component.filename, 
+                path: component.path
+            });
+        }
     },
 
     downloadProject: function(item, e, eOpts) {

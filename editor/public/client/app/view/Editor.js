@@ -93,49 +93,51 @@ Ext.define('TeachingEditor.view.Editor', {
                         component.updateStatusBar();
                     });
 
-                    // This makes the file save itself automatically
-                    // every time the buffer is modified
-                    editor.getSession().on('change', function () {
-                        if (editor.saveTimeout) {
-                            clearTimeout(editor.saveTimeout);
-                        }
-                        editor.saveTimeout = setTimeout(function () {
-                            editor.saveTimeout = null;
-                            Ext.Ajax.request({
-                                url: '/app/file',
-                                params: {
-                                    filename: component.path,
-                                    data: editor.getSession().getValue()
-                                },
-                                method: 'POST',
-                                success: function(response){
-                                    if (editor.updateTimeout) {
-                                        clearTimeout(editor.updateTimeout);
+                    if (!component.preferences.readonly) {
+                        // This makes the file save itself automatically
+                        // every time the buffer is modified
+                        editor.getSession().on('change', function () {
+                            if (editor.saveTimeout) {
+                                clearTimeout(editor.saveTimeout);
+                            }
+                            editor.saveTimeout = setTimeout(function () {
+                                editor.saveTimeout = null;
+                                Ext.Ajax.request({
+                                    url: '/app/file',
+                                    params: {
+                                        filename: component.path,
+                                        data: editor.getSession().getValue()
+                                    },
+                                    method: 'POST',
+                                    success: function(response){
+                                        if (editor.updateTimeout) {
+                                            clearTimeout(editor.updateTimeout);
+                                        }
+                                        editor.updateTimeout = setTimeout(function update() {
+                                            editor.updateTimeout = null;
+                                            var mainProjectFrame = document.getElementById('mainProjectFrame');
+                                            mainProjectFrame.src = mainProjectFrame.src;
+
+                                            // Restore the focus on the editor when
+                                            // the iframe is loaded... With jQuery
+                                            // Mobile this is required.
+                                            mainProjectFrame.onload = function() {
+                                                editor.focus();
+                                            };
+
+                                            component.fireEvent('editorupdated', component);
+                                        }, 200);
                                     }
-                                    editor.updateTimeout = setTimeout(function update() {
-                                        editor.updateTimeout = null;
-                                        var mainProjectFrame = document.getElementById('mainProjectFrame');
-                                        mainProjectFrame.src = mainProjectFrame.src;
-
-                                        // Restore the focus on the editor when
-                                        // the iframe is loaded... With jQuery
-                                        // Mobile this is required.
-                                        mainProjectFrame.onload = function() {
-                                            editor.focus();
-                                        };
-
-                                        component.fireEvent('editorupdated', component);
-                                    }, 200);
-                                }
-                            });
-                        }, 500);
-                    });
+                                });
+                            }, 500);
+                        });
+                    }
                 }
-            );
-        });
-    }
+                                          );
+            });
+        }
 
-    return this;
-}
+        return this;
+    }
 });
 
