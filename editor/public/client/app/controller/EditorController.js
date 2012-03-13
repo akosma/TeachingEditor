@@ -117,6 +117,13 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                         files: items
                                     });
                                 }
+
+                                // Whether there is a current project or not, 
+                                // the sharing option must be sent to the new
+                                // student:
+                                if (!self.sharing) {
+                                    self.socket.emit('pause sharing', {});
+                                }
                             });
                         }
                         else {
@@ -154,7 +161,6 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 editorTabPanel.setActiveTab(tab);
                             });
                             self.socket.on('file updated', function(data) {
-                                console.log(data);
                                 var path = data.path;
                                 var tab = self.openFiles[path];
                                 var position = tab.editor.getSession().getSelection().getCursor();
@@ -186,6 +192,11 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                     for (var index = 0, length = files.length; index < length; ++index) {
                                         var obj = files[index];
                                         self.openFilename(obj.filename, obj.path);
+                                    }
+
+                                    // If not sharing, conceal everything
+                                    if (!data.sharing) {
+                                        self.pauseSharing();
                                     }
                                 }
                             });
@@ -441,6 +452,12 @@ Ext.define('TeachingEditor.controller.EditorController', {
     pauseSharing: function() {
         var viewport = Ext.getCmp('appViewport');
         viewport.setVisible(false);
+
+        var style = document.body.style;
+        style.backgroundColor = 'black';
+        style.backgroundImage = 'url(/images/blocked.png)';
+        style.backgroundPosition = 'center';
+        style.backgroundRepeat = 'no-repeat';
     },
 
     resumeSharing: function() {
