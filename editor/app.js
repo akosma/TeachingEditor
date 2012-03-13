@@ -59,6 +59,9 @@ io.sockets.on('connection', function (socket) {
     socket.on('resume sharing', function(data) {
         socket.broadcast.emit('resume sharing', data);
     });
+    socket.on('open url', function(data) {
+        socket.broadcast.emit('open url', data);
+    });
     socket.on('initialize student', function(data) {
         socket.broadcast.emit('initialize student', data);
     });

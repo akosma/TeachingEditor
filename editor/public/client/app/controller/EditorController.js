@@ -44,6 +44,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
                 click: this.pauseResumeSharing
             },
 
+            'menuitem[action=sendOpenURLMessage]': {
+                click: this.sendOpenURLMessage
+            },
+
             'menuitem[action=showAboutBox]': {
                 click: this.showAboutBox
             },
@@ -124,7 +128,8 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 'openProjectMenu',
                                 'closeProjectMenu',
                                 'shareOptionsButton',
-                                'pauseResumeSharingButton'
+                                'pauseResumeSharingButton',
+                                'openURLMenuItem'
                             ];
                             for (var index = 0, length = menuItems.length; index < length; ++index) {
                                 var itemName = menuItems[index];
@@ -164,6 +169,9 @@ Ext.define('TeachingEditor.controller.EditorController', {
                             });
                             self.socket.on('resume sharing', function(data) {
                                 self.resumeSharing();
+                            });
+                            self.socket.on('open url', function(data) {
+                                self.openURL(data.url);
                             });
                             self.socket.on('initialize student', function(data) {
                                 if (!self.initialized) {
@@ -438,6 +446,37 @@ Ext.define('TeachingEditor.controller.EditorController', {
     resumeSharing: function() {
         var viewport = Ext.getCmp('appViewport');
         viewport.setVisible(true);
+    },
+
+    sendOpenURLMessage: function(item, e, eOpts) {
+        if (this.teacher) {
+            var self = this;
+            Ext.MessageBox.prompt('Open URL', 'Enter the URL to share with the students:', function(button, url) {
+                if (button === 'ok') {
+                    self.socket.emit('open url', {
+                        url: url
+                    });
+                }
+            }, this, false, 'http://');
+        }
+    },
+
+    openURL: function(url) {
+        if (!this.teacher) {
+            var child = window.open(url, '_blank');
+
+            if (!child) {
+                var message = [
+                    'The teacher wants to show you this URL:',
+                    '<span style="font-weight: bold; text-align: center;">',
+                    url,
+                    '</span>',
+                    'Could you please disable your popup blocker momentarily?',
+                    'Thanks!'
+                ];
+                Ext.MessageBox.alert('Popup blocker', message.join("<br>"));
+            }
+        }
     },
 
     showAboutBox: function(item, e, eOpts) {

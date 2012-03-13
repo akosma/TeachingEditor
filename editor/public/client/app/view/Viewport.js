@@ -218,6 +218,12 @@ Ext.define('TeachingEditor.view.Viewport', {
                 },
                 {
                     xtype: 'menuitem',
+                    text: 'Open URL',
+                    action: 'sendOpenURLMessage',
+                    id: 'openURLMenuItem'
+                },
+                {
+                    xtype: 'menuitem',
                     text: 'About',
                     action: 'showAboutBox'
                 }
