@@ -36,11 +36,15 @@ Ext.define('TeachingEditor.controller.EditorController', {
                 click: this.openSelectedProject
             },
 
-            'button[action=showShareOptions]': {
+            'menuitem[action=showShareOptions]': {
                 click: this.showShareOptions
             },
 
-            'button[action=showAboutBox]': {
+            'menuitem[action=pauseResumeSharing]': {
+                click: this.pauseResumeSharing
+            },
+
+            'menuitem[action=showAboutBox]': {
                 click: this.showAboutBox
             },
 
@@ -90,6 +94,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
                         if (local) {
                             // This happens in the teacher console
                             self.teacher = true;
+                            self.sharing = true;
 
                             // When a new student connects, tell 
                             self.socket.on('new student', function(data) {
@@ -118,7 +123,8 @@ Ext.define('TeachingEditor.controller.EditorController', {
                             var menuItems = [
                                 'openProjectMenu',
                                 'closeProjectMenu',
-                                'shareOptionsButton'
+                                'shareOptionsButton',
+                                'pauseResumeSharingButton'
                             ];
                             for (var index = 0, length = menuItems.length; index < length; ++index) {
                                 var itemName = menuItems[index];
@@ -152,6 +158,12 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
                                     self.refreshWebApp();
                                 });
+                            });
+                            self.socket.on('pause sharing', function(data) {
+                                self.pauseSharing();
+                            });
+                            self.socket.on('resume sharing', function(data) {
+                                self.resumeSharing();
                             });
                             self.socket.on('initialize student', function(data) {
                                 if (!self.initialized) {
@@ -383,7 +395,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
         }
     },
 
-    showShareOptions: function(button, e, eOpts) {
+    showShareOptions: function(item, e, eOpts) {
         var message = [
             '<pre align="center" style="font-size: 28pt; color: black;">',
             'http://',
@@ -395,7 +407,40 @@ Ext.define('TeachingEditor.controller.EditorController', {
         Ext.MessageBox.alert("Follow this sample live!", message.join(""));
     },
 
-    showAboutBox: function(button, e, eOpts) {
+    pauseResumeSharing: function(item, e, eOpts) {
+        if (this.teacher) {
+            var message = '';
+            var menuTitle = '';
+            if (this.sharing) {
+                this.sharing = false;
+                message = 'pause sharing';
+                menuTitle = 'Resume Sharing';
+            }
+            else {
+                this.sharing = true;
+                message = 'resume sharing';
+                menuTitle = 'Pause Sharing';
+            }
+            // Notify all connected clients
+            this.socket.emit(message, {});
+
+            // Change the text of the menu
+            var pauseResumeSharingButton = Ext.getCmp('pauseResumeSharingButton');
+            pauseResumeSharingButton.setText(menuTitle);
+        }
+    },
+
+    pauseSharing: function() {
+        var viewport = Ext.getCmp('appViewport');
+        viewport.setVisible(false);
+    },
+
+    resumeSharing: function() {
+        var viewport = Ext.getCmp('appViewport');
+        viewport.setVisible(true);
+    },
+
+    showAboutBox: function(item, e, eOpts) {
         var message = [
             'Teaching Editor 1.0',
             'by Adrian Kosmaczewski',

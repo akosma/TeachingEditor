@@ -1,5 +1,6 @@
 Ext.define('TeachingEditor.view.Viewport', {
     extend: 'Ext.container.Viewport',
+    id: 'appViewport',
     renderTo: Ext.getBody(),
     layout: {
         type: 'border'
@@ -199,14 +200,29 @@ Ext.define('TeachingEditor.view.Viewport', {
         },
         {
             xtype: 'button',
-            text: 'Share',
-            action: 'showShareOptions',
-            id: 'shareOptionsButton'
-        },
-        {
-            xtype: 'button',
-            text: 'About',
-            action: 'showAboutBox'
+            text: 'Project',
+            menu: {
+                xtype: 'menu',
+                items: [
+                    {
+                    xtype: 'menuitem',
+                    text: 'Show Share URL',
+                    action: 'showShareOptions',
+                    id: 'shareOptionsButton'
+                },
+                {
+                    xtype: 'menuitem',
+                    text: 'Pause Sharing',
+                    action: 'pauseResumeSharing',
+                    id: 'pauseResumeSharingButton'
+                },
+                {
+                    xtype: 'menuitem',
+                    text: 'About',
+                    action: 'showAboutBox'
+                }
+                ]
+            }
         }
         ]
     },

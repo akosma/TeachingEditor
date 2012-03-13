@@ -53,6 +53,12 @@ io.sockets.on('connection', function (socket) {
     socket.on('new student', function(data) {
         socket.broadcast.emit('new student', data);
     });
+    socket.on('pause sharing', function(data) {
+        socket.broadcast.emit('pause sharing', data);
+    });
+    socket.on('resume sharing', function(data) {
+        socket.broadcast.emit('resume sharing', data);
+    });
     socket.on('initialize student', function(data) {
         socket.broadcast.emit('initialize student', data);
     });
