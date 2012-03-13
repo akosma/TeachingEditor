@@ -576,30 +576,26 @@ Ext.define('TeachingEditor.controller.EditorController', {
     },
 
     sendOpenURLMessage: function(item, e, eOpts) {
-        if (this.teacher) {
-            var self = this;
-            Ext.MessageBox.prompt('Open URL', 'Enter the URL to share with the students:', function(button, url) {
-                if (button === 'ok') {
-                    self.socket.emit('open url', {
-                        url: url
-                    });
-                }
-            }, this, false, 'http://');
-        }
+        var self = this;
+        Ext.MessageBox.prompt('Open URL', 'Enter the URL to share with the students:', function(button, url) {
+            if (button === 'ok') {
+                self.socket.emit('open url', {
+                    url: url
+                });
+            }
+        }, this, false, 'http://');
     },
 
     openURL: function(url) {
-        if (!this.teacher) {
-            var message = [
-                'The teacher wants to show you this URL:',
-                '<span style="font-weight: bold; text-align: center;">',
-                '<a target="_blank" href="' + url + '">' + url + '</a>',
-                '</span>',
-                'You can click on the link above, or',
-                'you can also click "OK" to close this dialog box.'
-            ];
-            var alert = Ext.MessageBox.alert('URL shared by the teacher', message.join("<br>"));
-        }
+        var message = [
+            'This URL has been shared:',
+            '<span style="font-weight: bold; text-align: center;">',
+            '<a style="color: black; font-weight: normal; font-family: monospace; text-decoration: none; font-size: 20pt;" target="_blank" href="' + url + '">' + url + '</a>',
+            '</span>',
+            'Click on the URL to open it, or',
+            'click "OK" to close this dialog box.'
+        ];
+        var alert = Ext.MessageBox.alert('Open Shared URL', message.join("<br>"));
     },
 
     showAboutBox: function(item, e, eOpts) {
