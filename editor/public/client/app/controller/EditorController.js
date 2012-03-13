@@ -108,6 +108,14 @@ Ext.define('TeachingEditor.controller.EditorController', {
                             self.teacher = true;
                             self.sharing = true;
 
+                            // set menus as disabled
+                            var inactiveMenuItems = [
+                                'downloadProjectMenu',
+                                'closeProjectMenu',
+                                'newFileMenu'
+                            ];
+                            self.setMenuItemsEnabled(inactiveMenuItems, false);
+
                             // When a new student connects, tell 
                             self.socket.on('new student', function(data) {
                                 if (self.currentProject) {
@@ -148,11 +156,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 'newProjectMenu',
                                 'newFileMenu'
                             ];
-                            for (var index = 0, length = menuItems.length; index < length; ++index) {
-                                var itemName = menuItems[index];
-                                var item = Ext.getCmp(itemName);
-                                item.setDisabled(true);
-                            }
+                            self.setMenuItemsEnabled(menuItems, false);
 
                             // Register to receive notifications
                             self.socket.on('open project', function(data) {
@@ -221,6 +225,14 @@ Ext.define('TeachingEditor.controller.EditorController', {
         });
     },
 
+    setMenuItemsEnabled: function(menuItems, enabled) {
+        for (var index = 0, length = menuItems.length; index < length; ++index) {
+            var itemName = menuItems[index];
+            var item = Ext.getCmp(itemName);
+            item.setDisabled(!enabled);
+        }
+    },
+
     loadPreferences: function() {
         var storedPreferences = localStorage[this.PREFERENCES_KEY];
         if (!storedPreferences) {
@@ -265,12 +277,12 @@ Ext.define('TeachingEditor.controller.EditorController', {
                         var status = JSON.parse(response.responseText);
                         if (status.exists) {
                             Ext.MessageBox.alert('Error', 'That project already exists!', function() {
-                                setTimeout(self.showNewProjectDialog, 100);
+                                self.showNewProjectDialog(item, e, eOpts);
                             });
                         }
                         else {
                             self.openProject(name, function () {
-                                this.socket.emit('open project', { projectName: name });
+                                self.socket.emit('open project', { projectName: name });
                             });
                         }
                     }
@@ -295,7 +307,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
                             var status = JSON.parse(response.responseText);
                             if (status.exists) {
                                 Ext.MessageBox.alert('Error', 'That file already exists!', function() {
-                                    setTimeout(self.showNewFileDialog, 100);
+                                    self.showNewFileDialog(item, e, eOpts);
                                 });
                             }
                             else {
@@ -352,6 +364,16 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
         // This is used by the 'downloadProject' action
         this.currentProject = null;
+
+        if (this.teacher) {
+            // set menus as enabled
+            var inactiveMenuItems = [
+                'downloadProjectMenu',
+                'closeProjectMenu',
+                'newFileMenu'
+            ];
+            this.setMenuItemsEnabled(inactiveMenuItems, false);
+        }        
     },
 
     cancelOpenProject: function(button, e, eOpts) {
@@ -394,6 +416,16 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
         // This is used by the 'downloadProject' action
         this.currentProject = projectName;
+
+        if (this.teacher) {
+            // set menus as enabled
+            var activeMenuItems = [
+                'downloadProjectMenu',
+                'closeProjectMenu',
+                'newFileMenu'
+            ];
+            this.setMenuItemsEnabled(activeMenuItems, true);
+        }
 
         if (callback) {
             callback();
