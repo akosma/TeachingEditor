@@ -234,25 +234,32 @@ Ext.define('TeachingEditor.view.Viewport', {
     },
     {
         xtype: 'panel',
-        width: 360,
+        width: 410,
         collapsible: true,
         title: 'Preview',
         layout: 'absolute',
         region: 'east',
         border: false,
-        bodyStyle: 'background: #D0DCED;',
+        id: 'previewPanel',
         items: [
             {
             xtype: 'panel',
             border: false,
-            x: 20,
-            y: 15,
-            height: 480,
+            x: 49,
+            y: 158,
+            height: 460,
             width: 320,
-            id: 'previewPanel',
             html: [
                 '<iframe id="mainProjectFrame" src="/projects/default" style="width: 100%; height: 100%; border: 0"></iframe>',
                 '<iframe id="downloadFrame" style="width: 0px; height: 0px; border: 0"></iframe>'].join("")
+        },
+        {
+            xtype: 'button',
+            x: 284,
+            y: 70,
+            text: 'Refresh',
+            scale: 'large',
+            action: 'refreshWebApp'
         }
         ]
     }

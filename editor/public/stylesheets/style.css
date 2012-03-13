@@ -32,7 +32,9 @@ span.statusBar {
     text-align: left;
 }
 
-#previewPanel {
-    box-shadow: 2px 2px 15px 5px #888;
+#previewPanel-body {
+    background: #D0DCED; 
+    background-image: url(/images/iphone.png);
+    background-repeat: no-repeat;
 }
 

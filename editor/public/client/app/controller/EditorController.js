@@ -44,6 +44,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
                 click: this.showAboutBox
             },
 
+            'button[action=refreshWebApp]': {
+                click: this.refreshWebApp
+            },
+
             '#projectlist': {
                 itemclick: this.projectListSingleClick,
                 itemdblclick: this.projectListDoubleClick
@@ -402,6 +406,12 @@ Ext.define('TeachingEditor.controller.EditorController', {
             'All Rights Reserved'
         ];
         Ext.MessageBox.alert('About this app', message.join("<br>"));
+    },
+
+    refreshWebApp: function(button, e, eOpts) {
+        // Load index.html in the <iframe>
+        var mainProjectFrame = document.getElementById('mainProjectFrame');
+        mainProjectFrame.src = mainProjectFrame.src;
     },
 
     editorUpdated: function(component) {
