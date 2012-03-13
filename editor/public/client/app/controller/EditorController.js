@@ -577,7 +577,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
     sendOpenURLMessage: function(item, e, eOpts) {
         var self = this;
-        Ext.MessageBox.prompt('Open URL', 'Enter the URL to share with the students:', function(button, url) {
+        Ext.MessageBox.prompt('Open URL', 'Enter the URL to share:', function(button, url) {
             if (button === 'ok') {
                 self.socket.emit('open url', {
                     url: url
