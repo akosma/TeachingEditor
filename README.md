@@ -51,10 +51,10 @@ How to Use
 
 - `./install.sh` (this will download the required libraries, only
   required once)
-- `./launch.sh` (this launches the Node.js app)
-- Open <http://localhost:3000/> in your browser
-- Alternatively, students can browse to the IP shown in the dialog of
-  the "Share" button on the toolbar.
+- `./launch.sh` (this launches the Node.js app and opens a browser
+  window)
+- Students can browse to the IP shown in the dialog of the "Project /
+  Show Share URL" menu entry.
 
 
 [1]:http://ace.ajax.org/
