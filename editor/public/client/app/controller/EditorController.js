@@ -116,7 +116,13 @@ Ext.define('TeachingEditor.controller.EditorController', {
                             ];
                             self.setMenuItemsEnabled(inactiveMenuItems, false);
 
-                            // When a new student connects, tell 
+                            // Open the URL shared by one of the students!
+                            self.socket.on('open url', function(data) {
+                                self.openURL(data.url);
+                            });
+                            
+                            // When a new student connects, tell it to open the
+                            // current project as well as the open files
                             self.socket.on('new student', function(data) {
                                 if (self.currentProject) {
                                     var editorTabPanel = Ext.getCmp('editorTabPanel');
@@ -152,7 +158,6 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 'closeProjectMenu',
                                 'shareOptionsButton',
                                 'pauseResumeSharingButton',
-                                'openURLMenuItem',
                                 'newProjectMenu',
                                 'newFileMenu'
                             ];
