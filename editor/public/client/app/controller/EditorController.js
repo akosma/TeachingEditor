@@ -463,19 +463,15 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
     openURL: function(url) {
         if (!this.teacher) {
-            var child = window.open(url, '_blank');
-
-            if (!child) {
-                var message = [
-                    'The teacher wants to show you this URL:',
-                    '<span style="font-weight: bold; text-align: center;">',
-                    url,
-                    '</span>',
-                    'Could you please disable your popup blocker momentarily?',
-                    'Thanks!'
-                ];
-                Ext.MessageBox.alert('Popup blocker', message.join("<br>"));
-            }
+            var message = [
+                'The teacher wants to show you this URL:',
+                '<span style="font-weight: bold; text-align: center;">',
+                '<a target="_blank" href="' + url + '">' + url + '</a>',
+                '</span>',
+                'You can click on the link above, or',
+                'you can also click "OK" to close this dialog box.'
+            ];
+            var alert = Ext.MessageBox.alert('URL shared by the teacher', message.join("<br>"));
         }
     },
 

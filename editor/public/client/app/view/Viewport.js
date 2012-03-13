@@ -218,13 +218,13 @@ Ext.define('TeachingEditor.view.Viewport', {
                 },
                 {
                     xtype: 'menuitem',
-                    text: 'Open URL',
+                    text: 'Share URL with Students',
                     action: 'sendOpenURLMessage',
                     id: 'openURLMenuItem'
                 },
                 {
                     xtype: 'menuitem',
-                    text: 'About',
+                    text: 'About this Application',
                     action: 'showAboutBox'
                 }
                 ]
