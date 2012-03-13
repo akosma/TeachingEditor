@@ -51,7 +51,7 @@ How to Use
 
 - `./install.sh` (this will download the required libraries, only
   required once)
-- `./launch.sh` (this launches the Node.js app and opens a browser
+- `./launch.js` (this launches the Node.js app and opens a browser
   window)
 - Students can browse to the IP shown in the dialog of the "Project /
   Show Share URL" menu entry.

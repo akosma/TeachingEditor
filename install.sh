@@ -47,7 +47,7 @@ rm ext.zip
 
 echo ===========================
 echo Congratulations! The application is installed and ready to use.
-echo You can now start the server by typing './launch.sh'.
+echo You can now start the server by typing './launch.js'.
 echo You can add more code samples in the 'editor/public/projects' folder. 
 echo Every subfolder in that folder is treated as a project, and will be 
 echo automatically recognized by the app.

@@ -4,6 +4,8 @@
 // http://dailyjs.com/2012/03/01/unix-node-arguments/
 
 var spawn = require('child_process').spawn;
+
+// Execute the application
 var node  = spawn('node', ['editor/app.js']);
 
 node.stdout.on('data', function (data) {
@@ -18,6 +20,7 @@ node.on('exit', function (code) {
   console.log('child process exited with code ' + code);
 });
 
+// Open a browser window after a couple of milliseconds
 setTimeout(function () {
     var browser = spawn('open', ['http://localhost:3000/']);
 }, 200);
