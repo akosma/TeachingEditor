@@ -8,6 +8,14 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
     init: function() {
         this.control({
+            'menuitem[action=showNewProjectDialog]': {
+                click: this.showNewProjectDialog
+            },
+
+            'menuitem[action=showNewFileDialog]': {
+                click: this.showNewFileDialog
+            },
+
             'menuitem[action=changeEditorFontSize]': {
                 click: this.changeEditorFontSize
             },
@@ -136,7 +144,9 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 'closeProjectMenu',
                                 'shareOptionsButton',
                                 'pauseResumeSharingButton',
-                                'openURLMenuItem'
+                                'openURLMenuItem',
+                                'newProjectMenu',
+                                'newFileMenu'
                             ];
                             for (var index = 0, length = menuItems.length; index < length; ++index) {
                                 var itemName = menuItems[index];
@@ -241,6 +251,65 @@ Ext.define('TeachingEditor.controller.EditorController', {
         return preferences[key];
     },
 
+    showNewProjectDialog: function(item, e, eOpts) {
+        var self = this;
+        Ext.MessageBox.prompt('New Project', 'Enter the name of the new project:', function(button, name) {
+            if (button === 'ok') {
+                Ext.Ajax.request({
+                    url: '/app/newproject',
+                    params: {
+                        name: name
+                    },
+                    method: 'POST',
+                    success: function(response) {
+                        var status = JSON.parse(response.responseText);
+                        if (status.exists) {
+                            Ext.MessageBox.alert('Error', 'That project already exists!', function() {
+                                setTimeout(self.showNewProjectDialog, 100);
+                            });
+                        }
+                        else {
+                            self.openProject(name, function () {
+                                this.socket.emit('open project', { projectName: name });
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    },
+
+    showNewFileDialog: function(item, e, eOpts) {
+        if (this.currentProject) {
+            var self = this;
+            Ext.MessageBox.prompt('New File', 'Enter the name of the new file:', function(button, name) {
+                if (button === 'ok') {
+                    Ext.Ajax.request({
+                        url: '/app/newfile',
+                        params: {
+                            project: self.currentProject,
+                            filename: name
+                        },
+                        method: 'POST',
+                        success: function(response) {
+                            var status = JSON.parse(response.responseText);
+                            if (status.exists) {
+                                Ext.MessageBox.alert('Error', 'That file already exists!', function() {
+                                    setTimeout(self.showNewFileDialog, 100);
+                                });
+                            }
+                            else {
+                                var projectStore = Ext.data.StoreManager.lookup('ProjectTreeStore');
+                                projectStore.load();
+                                self.openFilename(name, status.path);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    },
+
     changeEditorFontSize: function(item, e, eOpts) {
         if (this.currentEditor) {
             this.setPreference('fontSize', item.text);
@@ -302,7 +371,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
         this.openProjectDialog = null;
     },
 
-    openProject: function(projectName) {
+    openProject: function(projectName, callback) {
         this.closeProject();
 
         var projectStore = Ext.data.StoreManager.lookup('ProjectTreeStore');
@@ -325,6 +394,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
 
         // This is used by the 'downloadProject' action
         this.currentProject = projectName;
+
+        if (callback) {
+            callback();
+        }
     },
 
     projectListSingleClick: function (view, record, element, index, event, eOpts) {
@@ -500,7 +573,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
             'Copyright © 2012 akosma software',
             'All Rights Reserved'
         ];
-        Ext.MessageBox.alert('About this app', message.join("<br>"));
+        Ext.MessageBox.alert('About this Application', message.join("<br>"));
     },
 
     refreshWebApp: function(button, e, eOpts) {

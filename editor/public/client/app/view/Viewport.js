@@ -34,7 +34,19 @@ Ext.define('TeachingEditor.view.Viewport', {
                     items: [
                         {
                         xtype: 'menuitem',
-                        text: 'Open...',
+                        text: 'New Project...',
+                        action: 'showNewProjectDialog',
+                        id: 'newProjectMenu'
+                    },
+                        {
+                            xtype: 'menuitem',
+                            text: 'New File...',
+                            action: 'showNewFileDialog',
+                            id: 'newFileMenu'
+                        },
+                        {
+                        xtype: 'menuitem',
+                        text: 'Open Project...',
                         action: 'showOpenProjectDialog',
                         id: 'openProjectMenu'
                     },
@@ -213,7 +225,7 @@ Ext.define('TeachingEditor.view.Viewport', {
                     items: [
                         {
                         xtype: 'menuitem',
-                        text: 'Show Share URL',
+                        text: 'Show Share URL...',
                         action: 'showShareOptions',
                         id: 'shareOptionsButton'
                     },
@@ -225,7 +237,7 @@ Ext.define('TeachingEditor.view.Viewport', {
                     },
                     {
                         xtype: 'menuitem',
-                        text: 'Share URL with Students',
+                        text: 'Share URL with Students...',
                         action: 'sendOpenURLMessage',
                         id: 'openURLMenuItem'
                     },

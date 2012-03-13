@@ -31,6 +31,64 @@ exports.start = function(req, res) {
     }
 };
 
+exports.newproject = function(req, res) {
+    var projectsPath = __dirname + '/../public/projects/';
+    var newpath = projectsPath + req.body.name;
+
+    var path = require('path');
+    path.exists(newpath, function (exists) {
+        res.writeHead(200, {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        });
+        if (exists) {
+            var response = { exists: true };
+            var body = JSON.stringify(response);
+            res.end(body);
+        }
+        else {
+            var fs = require('fs');
+            fs.mkdir(newpath, '0777', function(err) {
+                var indexpath = newpath + '/index.html';
+                fs.writeFile(indexpath, '', function (err) {
+                    var response = { exists: false };
+                    var body = JSON.stringify(response);
+                    res.end(body);
+                });
+            });
+        }
+    });
+};
+
+exports.newfile = function(req, res) {
+    var projectsPath = __dirname + '/../public/projects/' + req.body.project;
+    var newpath = projectsPath + '/' + req.body.filename;
+
+    var path = require('path');
+    path.exists(newpath, function (exists) {
+        res.writeHead(200, {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        });
+        if (exists) {
+            var response = { exists: true };
+            var body = JSON.stringify(response);
+            res.end(body);
+        }
+        else {
+            var fs = require('fs');
+            fs.writeFile(newpath, '', function (err) {
+                var response = { 
+                    exists: false,
+                    path: newpath
+                };
+                var body = JSON.stringify(response);
+                res.end(body);
+            });
+        }
+    });
+};
+
 exports.projects = function (req, res) {
     var fs = require('fs');
     var listProjects = function(dir, done) {
