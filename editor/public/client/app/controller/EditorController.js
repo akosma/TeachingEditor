@@ -143,7 +143,10 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                 // Whether there is a current project or not, 
                                 // the sharing option must be sent to the new
                                 // student:
-                                if (!self.sharing) {
+                                if (self.sharing) {
+                                    self.socket.emit('resume sharing', {});
+                                }
+                                else {
                                     self.socket.emit('pause sharing', {});
                                 }
                             });
