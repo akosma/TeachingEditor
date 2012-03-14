@@ -83,8 +83,11 @@ Ext.define('TeachingEditor.controller.EditorController', {
         });
     },
 
+    // Executed when the controller is instantiated
     onLaunch: function(app) {
         var self = this;
+
+        // We first request the current IP address of the server
         Ext.Ajax.request({
             url: '/app/ip',
             method: 'GET',
@@ -92,8 +95,13 @@ Ext.define('TeachingEditor.controller.EditorController', {
                 var text = response.responseText;
                 var array = JSON.parse(text);
                 self.ipaddress = array[0];
+
+                // This opens up a Socket.io socket to the server
                 self.socket = io.connect('http://' + self.ipaddress);
 
+                // Now we ask to see if we are working in "localhost" mode or
+                // not, in which case we are teachers; otherwise we are
+                // students, and we are thus in readonly mode
                 Ext.Ajax.request({
                     url: '/app/local',
                     method: 'GET',
@@ -331,16 +339,16 @@ Ext.define('TeachingEditor.controller.EditorController', {
     },
 
     changeEditorFontSize: function(item, e, eOpts) {
+        this.setPreference('fontSize', item.text);
         if (this.currentEditor) {
-            this.setPreference('fontSize', item.text);
             this.currentEditor.preferences = this.loadPreferences();
             this.currentEditor.updatePreferences();
         }
     },
 
     changeEditorTheme: function(item, e, eOpts) {
+        this.setPreference('theme', item.text);
         if (this.currentEditor) {
-            this.setPreference('theme', item.text);
             this.currentEditor.preferences = this.loadPreferences();
             this.currentEditor.updatePreferences();
         }

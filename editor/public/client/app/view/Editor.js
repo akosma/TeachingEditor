@@ -132,8 +132,7 @@ Ext.define('TeachingEditor.view.Editor', {
                             }, 500);
                         });
                     }
-                }
-                                          );
+                });
             });
         }
 
