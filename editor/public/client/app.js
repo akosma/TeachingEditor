@@ -28,6 +28,8 @@ Ext.application({
             return this.indexOf(suffix, this.length - suffix.length) !== -1;
         };
 
+        // Taken from 
+        // http://stackoverflow.com/questions/3954438/remove-item-from-array-by-value
         Array.prototype.remove = function() {
             var what, a = arguments, l = a.length, ax;
             while(l && this.length) {
@@ -39,9 +41,10 @@ Ext.application({
             return this;
         };
 
+        // Make the editor tab panel react to CTRL+ALT+arrow navigation
+        // to jump from tab to tab, for easier edition
         var editorTabPanel = Ext.getCmp('editorTabPanel');
         var tabs = editorTabPanel.items;
-
         var map = Ext.create('Ext.util.KeyMap', Ext.getBody(), [{
             key: Ext.EventObject.LEFT,
             shift: false,
@@ -59,7 +62,8 @@ Ext.application({
                     }
                 }
             }
-        }, {
+        }, 
+        {
             key: Ext.EventObject.RIGHT,
             shift: false,
             alt: true,
