@@ -223,11 +223,6 @@ Ext.define('TeachingEditor.controller.EditorController', {
                                         var obj = files[index];
                                         self.openFilename(obj.filename, obj.path);
                                     }
-
-                                    // If not sharing, conceal everything
-                                    if (!data.sharing) {
-                                        self.pauseSharing();
-                                    }
                                 }
                             });
 
