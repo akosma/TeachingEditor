@@ -20,8 +20,18 @@ node.on('exit', function (code) {
   console.log('child process exited with code ' + code);
 });
 
-// Open a browser window after a couple of milliseconds
-setTimeout(function () {
-    var browser = spawn('open', ['http://localhost:3000/']);
-}, 200);
+var parameter = process.argv[2];
+
+if (parameter === 'fluid') {
+    // Open a browser window after a couple of milliseconds
+    setTimeout(function () {
+        var app = spawn('open', ['/Applications/Teaching\ Editor.app']);
+    }, 200);
+}
+else {
+    // Open a browser window after a couple of milliseconds
+    setTimeout(function () {
+        var browser = spawn('open', ['http://localhost:3000/']);
+    }, 200);
+}
 
