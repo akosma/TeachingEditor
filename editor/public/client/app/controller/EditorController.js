@@ -87,6 +87,68 @@ Ext.define('TeachingEditor.controller.EditorController', {
     onLaunch: function(app) {
         var self = this;
 
+        // Make the editor tab panel react to CTRL+ALT+arrow navigation
+        // to jump from tab to tab, for easier edition
+        var editorTabPanel = Ext.getCmp('editorTabPanel');
+        var tabs = editorTabPanel.items;
+        var map = Ext.create('Ext.util.KeyMap', Ext.getBody(), [{
+            key: Ext.EventObject.LEFT,
+            shift: false,
+            alt: true,
+            ctrl: true,
+            fn: function() {
+                var length = tabs.getCount();
+                if (length > 0) {
+                    var currentTab = editorTabPanel.getActiveTab();
+                    var currentIndex = tabs.indexOf(currentTab);
+                    var nextIndex = currentIndex - 1;
+                    if (nextIndex >= 0) {
+                        var nextTab = tabs.getAt(nextIndex);
+                        editorTabPanel.setActiveTab(nextTab);
+                    }
+                }
+            }
+        }, 
+        {
+            key: Ext.EventObject.RIGHT,
+            shift: false,
+            alt: true,
+            ctrl: true,
+            fn: function() {
+                var length = tabs.getCount();
+                if (length > 0) {
+                    var currentTab = editorTabPanel.getActiveTab();
+                    var currentIndex = tabs.indexOf(currentTab);
+                    var nextIndex = currentIndex + 1;
+                    if (nextIndex < length) {
+                        var nextTab = tabs.getAt(nextIndex);
+                        editorTabPanel.setActiveTab(nextTab);
+                    }
+                }
+            }
+        },
+        {
+            // SHIFT+CTRL+O opens the "open project" dialog
+            key: Ext.EventObject.O,
+            shift: true,
+            alt: false,
+            ctrl: true,
+            fn: function () {
+                self.showOpenProjectDialog();
+            }
+        },
+        {
+            // SHIFT+CTRL+R refreshes the preview pane
+            key: Ext.EventObject.R,
+            shift: true,
+            alt: false,
+            ctrl: true,
+            fn: function () {
+                self.refreshWebApp();
+            }
+        }]);
+        
+
         // We first request the current IP address of the server
         Ext.Ajax.request({
             url: '/app/ip',
