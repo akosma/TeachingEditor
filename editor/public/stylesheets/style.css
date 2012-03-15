@@ -38,3 +38,11 @@ span.statusBar {
     background-repeat: no-repeat;
 }
 
+.sharedLink {
+    color: black; 
+    font-weight: normal; 
+    font-family: monospace; 
+    text-decoration: none; 
+    font-size: 20pt;
+}
+

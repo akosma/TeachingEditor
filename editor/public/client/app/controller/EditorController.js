@@ -656,7 +656,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
         var message = [
             'This URL has been shared:',
             '<span style="font-weight: bold; text-align: center;">',
-            '<a style="color: black; font-weight: normal; font-family: monospace; text-decoration: none; font-size: 20pt;" target="_blank" href="' + url + '">' + url + '</a>',
+            '<a class="sharedLink" target="_blank" href="' + url + '">' + url + '</a>',
             '</span>',
             'Click on the URL to open it, or',
             'click "OK" to close this dialog box.'
