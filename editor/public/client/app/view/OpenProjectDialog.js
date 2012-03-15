@@ -41,28 +41,25 @@ Ext.define('TeachingEditor.view.OpenProjectDialog', {
                 width: 150,
                 region: 'west',
                 dock: 'bottom',
-                items: [
+                items: [{
+                        xtype: 'tbspacer',
+                        width: 230
+                    },
                     {
-                    xtype: 'tbspacer',
-                    width: 230
-                },
-                {
-                    xtype: 'button',
-                    width: 75,
-                    text: 'OK',
-                    disabled: true,
-                    action: 'openSelectedProject',
-                    id: 'openSelectedProjectButton'
-                },
-                {
-                    xtype: 'button',
-                    width: 75,
-                    text: 'Cancel',
-                    action: 'cancelOpenProject'
-                }
-                ]
-            }
-            ]
+                        xtype: 'button',
+                        width: 75,
+                        text: 'OK',
+                        disabled: true,
+                        action: 'openSelectedProject',
+                        id: 'openSelectedProjectButton'
+                    },
+                    {
+                        xtype: 'button',
+                        width: 75,
+                        text: 'Cancel',
+                        action: 'cancelOpenProject'
+                    }]
+            }]
         });
 
         me.callParent(arguments);
