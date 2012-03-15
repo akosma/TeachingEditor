@@ -412,9 +412,7 @@ Ext.define('TeachingEditor.controller.EditorController', {
     },
 
     showOpenProjectDialog: function(item, e, eOpts) {
-        if (!this.openProjectDialog) {
-            this.openProjectDialog = Ext.create('TeachingEditor.view.OpenProjectDialog');
-        }
+        this.openProjectDialog = Ext.create('TeachingEditor.view.OpenProjectDialog');
         this.openProjectDialog.show();
         this.openProjectDialog.refresh();
     },
