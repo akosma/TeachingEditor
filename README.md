@@ -56,6 +56,12 @@ How to Use
 - Students can browse to the IP shown in the dialog of the "Project /
   Show Share URL" menu entry.
 
+License
+-------
+
+This project is released under the GPLv3 license. Please check the 
+LICENSE file for details.
+
 
 [1]:http://ace.ajax.org/
 [2]:http://www.sencha.com/products/extjs/
