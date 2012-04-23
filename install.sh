@@ -31,13 +31,13 @@ mv sencha-touch-2.0.0-gpl/ sencha
 rm sencha.zip
 
 echo Downloading jQuery Mobile 1.0.1
-curl --location http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.zip > jqm.zip
+curl --location http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.zip > jqm.zip
 unzip jqm.zip
 mv jquery.mobile-1.0.1/ jqm
 rm jqm.zip
 
 echo Downloading jQuery 1.7.1
-curl --location http://code.jquery.com/jquery-1.7.1.min.js > jqm/jquery-1.7.1.min.js
+curl --location http://code.jquery.com/jquery-1.7.2.min.js > jqm/jquery-1.7.2.min.js
 
 echo Downloading Ext.js 4
 curl --location http://cdn.sencha.io/ext-4.0.7-gpl.zip > ext.zip
