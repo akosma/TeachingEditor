@@ -14,7 +14,8 @@ It is built exclusively in JavaScript, using the following libraries:
 - [Node.js][3]
 - [Express][4]
 
-![Screenshot of Teaching Editor](screenshot.png)
+![Screenshot of Teaching
+Editor](https://github.com/akosmasoftware/TeachingEditor/raw/master/screenshot.png)
 
 Requirements
 ------------
