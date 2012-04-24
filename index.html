@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Teaching Editor by akosmasoftware</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Teaching Editor</h1>
+        <p>JavaScript-based web editor that can be shared with students learning about mobile web apps</p>
+        <p class="view"><a href="https://github.com/akosmasoftware/TeachingEditor">View the Project on GitHub <small>akosmasoftware/TeachingEditor</small></a></p>
+        <ul>
+          <li><a href="https://github.com/akosmasoftware/TeachingEditor/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/akosmasoftware/TeachingEditor/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/akosmasoftware/TeachingEditor">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Teaching Editor</h1>
+
+<p>This project provides an online editor that automatically reloads the
+contents of an iPhone-sized frame. It also provides students with a
+read-only mode, allowing them to follow in real time whatever code is
+written in the screen of the teacher, and they can also download the
+current state of the code at any moment.</p>
+
+<p>It is built exclusively in JavaScript, using the following libraries:</p>
+
+<ul>
+<li><a href="http://ace.ajax.org/">Ace</a></li>
+<li><a href="http://www.sencha.com/products/extjs/">Ext.js</a></li>
+<li><a href="http://nodejs.org/">Node.js</a></li>
+<li><a href="http://expressjs.com/">Express</a></li>
+</ul><p><img src="https://github.com/akosmasoftware/TeachingEditor/raw/master/screenshot.png" alt="Screenshot of Teaching
+Editor"></p>
+
+<h2>Requirements</h2>
+
+<h3>Server</h3>
+
+<p>Use <a href="http://mxcl.github.com/homebrew/">Homebrew</a> to install <a href="http://nodejs.org/">Node.js</a> in your system. Also, install
+<a href="http://npmjs.org/">npm</a> and install <a href="http://expressjs.com/">Express</a> and <a href="http://socket.io/">Socket.IO</a> with npm.</p>
+
+<p>The <code>install.sh</code> script performs all the required operations to install
+external dependencies in your system.</p>
+
+<h3>Client</h3>
+
+<p>The client has been tested successfully on several combinations of
+operating systems and browsers:</p>
+
+<ul>
+<li>Cross-platform browsers:
+
+<ul>
+<li>Firefox 10</li>
+<li>Chrome 17 </li>
+<li>Opera 11</li>
+</ul>
+</li>
+<li>OS X "Lion"
+
+<ul>
+<li>Safari 5.1</li>
+</ul>
+</li>
+<li>Windows 7
+
+<ul>
+<li>Internet Explorer 9</li>
+</ul>
+</li>
+<li>iOS
+
+<ul>
+<li>Mobile Safari for iOS 5.1 on the iPad (in this case, however,
+scrolling is not possible)</li>
+</ul>
+</li>
+</ul><p>Pay attention to the fact that the mobile libraries themselves might not
+be compatible with some of these browsers (in particular, Sencha Touch
+only works on Webkit-based browsers).</p>
+
+<h2>How to Use</h2>
+
+<ul>
+<li>
+<code>./install.sh</code> (this will download the required libraries, only
+required once)</li>
+<li>
+<code>./launch.js</code> (this launches the Node.js app and opens a browser
+window)</li>
+<li>Students can browse to the IP shown in the dialog of the "Project /
+Show Share URL" menu entry.</li>
+</ul><h2>License</h2>
+
+<p>This project is released under the GPLv3 license. Please check the 
+LICENSE file for details.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/akosmasoftware">akosmasoftware</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
